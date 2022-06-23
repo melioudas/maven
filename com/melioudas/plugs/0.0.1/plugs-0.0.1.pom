@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.0</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.melioudas</groupId>
+    <artifactId>plugs</artifactId>
+    <version>0.0.1</version>
+    <name>plugs</name>
+    <description>plugs for git mvn</description>
+    <distributionManagement>
+        <repository>
+            <id>melioudas-repository</id>
+            <!--            <url>file:D:\softup\JAVA_FAMILY\maven\repository</url>-->
+<!--            <url>file:D:\code\my_code\java\tools\plugs\target\mvn-repo</url>-->
+            <url>file://${project.build.directory}/mvn-repo</url>
+        </repository>
+    </distributionManagement>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <github.global.server>github</github.global.server>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo
+                    </altDeploymentRepository>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <!-- Deploy the web site -->
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <!-- select the Maven phase in which the plugin will be executed -->
+                        <phase>deploy</phase>
+                        <configuration>
+                            <!-- Plugin configuration goes here -->
+                            <server>github</server>
+                            <!-- The commit message -->
+                            <message>init git maven repository</message>
+                            <!-- The location where the site is uploaded -->
+                            <repositoryName>maven</repositoryName> <!-- github repo name -->
+                            <repositoryOwner>melioudas</repositoryOwner> <!-- organization or user name  -->
+                            <!-- Use merge or override the content -->
+                            <merge>true</merge>
+                            <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+                            <branch>refs/heads/mvn-repo</branch>
+                            <!--                        <includes>-->
+                            <!--                            <include>**/*</include>-->
+                            <!--                        </includes>-->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.springframework.boot</groupId>-->
+            <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--            </plugin>-->
+        </plugins>
+    </build>
+
+</project>
